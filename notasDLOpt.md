@@ -50,7 +50,7 @@ once you reduce the bias, do you have high variance?
 does your model generalize well for more data. if you have high variance, get more data, try regularization,
 try another NN architecture as well.
 
-Regularization:
+### Regularization:
 
 Reduces overfitting.
 
@@ -60,7 +60,7 @@ Add a term to multiply the norm of the W parameters usually the L2 regularizatio
 
 In NN you do this for every layer
 
-and you add it to the dW's, the regularization expression
+and you add it to the `dW`'s, the regularization expression
 
 also called weight decay.
 
@@ -68,15 +68,15 @@ regularization punishes large values in W. Which means they are penalized in the
 function as well. the larger lambda is and the smaller weights are, the more linear the function will be. it just makes
 that every layer is roughly linear, which makes the NN more linear
 
-Dropout regularization:
+#### Dropout regularization:
 
 flip a coin and kill nodes at random while training each example. the coin is flipped
 for every step, and you train with only the surviving on, backpropagation, and then
 train the next example with different nodes, etc.
 
-d3 = np.random.randn(a3.shape[0], a3.shape[1]) < keep_prob
-a3 = np.multiply(a3, d3)
-a3 /= keep_prob  # restores the previous (before dropout) expected value
+`d3 = np.random.randn(a3.shape[0], a3.shape[1]) < keep_prob`  
+`a3 = np.multiply(a3, d3)`  
+`a3 /= keep_prob  # restores the previous (before dropout) expected value`
 
 at test time, you don't drop out.
 
@@ -90,7 +90,7 @@ kinda like upping lambda for L2 regularization.
 downside is you have more hyperparameters. another option is to have dropout only for certain layers.
 
 
-Other methods:
+#### Other methods:
 
 data augmentation: e.g. vision, you can rotate images and distort them slightly and zoom in etc. and have your
 model understand that it's the same thing should be the same output.
@@ -115,8 +115,7 @@ the more layers they gradients explode or vanish depending on if they're slighly
 this kinda solves the above problem, being careful when initializing.
 the larger n (number of features in layer) is, the smaller you want wi
 
-the variance of wi = 1/n actually 2/n
-
+`the variance of wi = 1/n actually 2/n`  
 `W[l] = np.random.randn(shape) * np.sqrt(2/(n[l-1]))`
 
 this doesn't solve exploding/vanishing gradients but it helps a lot
@@ -141,7 +140,7 @@ now J(giant_theta)
 
 use the previous concept and add/sub epsilon to giant_theta and get dTheta_aprox and compare with dTheta
 
-check: norm(dTheta_aprox - dTheta)/(norm(dTheta_aprox) + norm(dTheta))
+check: `norm(dTheta_aprox - dTheta)/(norm(dTheta_aprox) + norm(dTheta))`
 
 DO NOT use this in training, only to debug
 Remember to include regularization if there's any
@@ -183,7 +182,7 @@ typical mini-batch sizes are: 64, 128, 256, 512
 ### exponentially weight (moving) averages
 `v_t = beta * v_t-1 + (1 - beta)*theta_t`
 
-v_t is approximately averaging over 1/(1 - beta) day's temperature.
+v_t is approximately averaging over `1/(1 - beta)` day's temperature.
 
 the bigger beta, the slower it adapts to the changes in v_t
 the smaller beta, the faster you adapt but the noisier it gets
@@ -193,7 +192,7 @@ the smaller beta, the faster you adapt but the noisier it gets
 the first few days are gonna be really low, cause of 1 - beta, since that multiplies and at first
 it's just 0
 
-better estimate: v_t/(1-beta^t)
+better estimate: `v_t/(1-beta^t)`
 
 note: not a lot of people bother with implementing this, maybe not worth it
 
@@ -204,7 +203,7 @@ Almost always works faster than standard gradient descent
 basically you get a weight average for he gradients and update with those. you take the oscillation
 of the first iterations and move in the general direction of the average.
 
-`w = w - alpha * VdW`
+`w = w - alpha * VdW`  
 `b = b - alpha * Vdb`
 
 beta = 0.9 means last 10 iterations
@@ -214,10 +213,10 @@ VdW and Vdb are initialized with 0s
 
 grouped mean square prop
 
-`Sdw = beta*SdW + (1-beta)dW^2 # element wise squared`
+`Sdw = beta*SdW + (1-beta)dW^2 # element wise squared`  
 `Sdb = beta*Sdb + (1-beta)db^2`
 
-`w = w - alpha(dW/sqrt(Sdw))`
+`w = w - alpha(dW/sqrt(Sdw))`  
 `b = b - alpha(db/sqrt(Sdb))`
 
 if you're overshooting on an axis this will scale that up and smoothen out the motion due to the
@@ -230,28 +229,29 @@ both betas
 
 ### Adam optimization alg
 
-Vdw = 0, SdW = 0, Vdb = 0 Sdb = 0
+`Vdw = 0, SdW = 0, Vdb = 0 Sdb = 0`
 
 you iterate over t and use a mini batch
 
-VdW = beta1 + (1-beta1)dW
-Vdb = beta1 + (1-beta1)db
+`VdW = beta1 + (1-beta1)dW`  
+`Vdb = beta1 + (1-beta1)db`
 
-`Sdw = beta2*SdW + (1-beta2)dW^2`
+`Sdw = beta2*SdW + (1-beta2)dW^2`  
 `Sdb = beta2*Sdb + (1-beta2)db^2`
 
-`Vdw[corrected] = Vdw/(1-beta1^t)`
+`Vdw[corrected] = Vdw/(1-beta1^t)`  
 `Vdb[corrected] = Vdb/(1-beta1^t)`
+
 
 Same for SdW and Sdb
 
-`W = W - alpha* VdW[corrected]/(sqrt(SdW[corrected]) + epsilon)`
+`W = W - alpha* VdW[corrected]/(sqrt(SdW[corrected]) + epsilon)`  
 `b = b - alpha* Vdb[corrected]/(sqrt(Sdb[corrected]) + epsilon)`
 
-alpha needs to be tuned
-beta1 usually 0.9 (dW)
-beta2 usually 0.999 (dW^2)
-epsilon usually 10e-08
+* alpha needs to be tuned
+* beta1 usually 0.9 (dW)
+* beta2 usually 0.999 (dW^2)
+* epsilon usually 10e-08
 
 ### Learning rate decay
 
@@ -263,8 +263,8 @@ recall what epoch is; going thru the whole training set
 
 decay_rate is another parameter
 
-There's also exponential learning decay: alpha = 0.95^epochnum \* alpha
-Also there's some constant variant: alpha = k/sqrt(epochnum) \* alpha
+There's also exponential learning decay: `alpha = 0.95^epochnum * alpha`  
+Also there's some constant variant: `alpha = k/sqrt(epochnum) * alpha`  
 Also there's a staircase method, update after a while
 
 And finally there's also manual learning decay
@@ -283,16 +283,16 @@ you probably won't get stuck there tho
 
 ## Hyperparameters
 
-alpha 
-beta
-beta1, beta2, epsilon
-\# layers
-\# hidden units
-learning rate decay
-mini-batch size
+* alpha 
+* beta
+* beta1, beta2, epsilon
+* \# layers
+* \# hidden units
+* learning rate decay
+* mini-batch size
 
 _most important_: alpha
-next would be: momentum, 0.9 is a good start
+next would be: momentum, 0.9 is a good start,
 mini batch size and the number of hidden units
 
 third in importance: number of layers and the learning
@@ -316,7 +316,7 @@ Some hyperparameters allow for a true random search or hell even a grid
 but e.g. alpha could not behave this way, you could avoid a linear scale
 and use a log scale and sample uniformly at random on the log scale
 
-`r = -4 * np.random.rand()`
+`r = -4 * np.random.rand()`  
 `alpha = 10^r`
 
 another tricky case could be the hyperparameters for exponentially weighted avgs.
@@ -341,10 +341,12 @@ before or after the activation function? the default choice is to normalize Z
 given some intermediate values in NN z1, ... , zm
 
 get mean and variance
-znorm = (zi - mean)/ (sqrt(variance + epsilon))
+
+\`znorm = (zi - mean)/ (sqrt(variance + epsilon))
 
 instead we compute
-`zi = gamma zi + beta,
+
+\`zi = gamma zi + beta,
 
 where gamma and beta are learnable parameters of the model and you update
 them as you would upate W and b
@@ -356,7 +358,7 @@ you may not want the intermediate values to be have mean 0 and variance 1
 
 ### Fitting batch norm into a neural network
 
-X ----> Z -------> `Z ---> a(Z) ---> etc.
+X ----> Z -------> \`Z ---> a(Z) ---> etc.
    W,b     beta,
           gamma 
 
@@ -391,11 +393,11 @@ keep track of the averages during training etc.
 
 ### Softmax regression
 
-C = # of classes
+`C = # of classes`
 
 the output layer has the number of classes
 
-n[L] = C
+`n[L] = C`
 
 so you have it output the probability for each class
 
@@ -403,9 +405,8 @@ after computing z[L]
 
 the activation function for the softmax classifier
 
-t = e^(z[L]) # element wise
-
-a_i[L] = e^z[L]/(sum(t_i))
+`t = e^(z[L]) # element wise`  
+`a_i[L] = e^z[L]/(sum(t_i))`
 
 so you do e^x and normalize the sum of those so it's 1
 
@@ -418,7 +419,7 @@ probabilities to each class, but usually just something like
 
 if C = 2, then softmax ends up being a simple regression
 
-Loss(y', y) = -sum from 1 to C of (y_j log(y'_j))
+`Loss(y', y) = -sum from 1 to C of (y_j log(y'_j))`
 
 y being a vector with a similar shape as hardmax. one hot vector
 for the classes
@@ -427,7 +428,7 @@ for the classes
 
 *Backpropagation*
 
-dZ[L] = y' - y
+`dZ[L] = y' - y`
 
 
 ## Frameworks
@@ -546,7 +547,6 @@ look at overall dev set error and out of this check:
 - Quickly set up a dev/test set and a metric
 - Build initial system quickly
 - Use bias/variance analysis and error analysis
-- 
 
 ### Training and testing on different distributions
 
@@ -580,13 +580,15 @@ distribution as the training set. so you cross validate on the new
 train-dev set. You train on the train set, and test on both the
 train-dev set and on the dev set. So now you can compare. e.g.:
 
-train error: 1%
-train-dev error: 9%  ---> same distribution, so you can conclude variance
-dev error: 10%
+- train error: 1%
+- train-dev error: 9%  ---> same distribution, so you can conclude variance
+- dev error: 10%
 
-train error: 1%
-train-dev error: 1.5% --> low variance
-dev error: 10%  ---> data mismatch problem
+----
+
+- train error: 1%
+- train-dev error: 1.5% --> low variance
+- dev error: 10%  ---> data mismatch problem
 
 Comparing with human error is still valid to determine high avoidable
 bias, using the human error as a proxy for bayes error.
