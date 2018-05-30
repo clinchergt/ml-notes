@@ -56,7 +56,7 @@ Reduces overfitting.
 
 Add a term to multiply the norm of the W parameters usually the L2 regularization:
 
-J(W,b) = 1/m sum(L (y_, y)) + lambda/(2m) * || w ||^2
+`J(W,b) = 1/m sum(L (y_, y)) + lambda/(2m) * || w ||^2`
 
 In NN you do this for every layer
 
@@ -117,7 +117,7 @@ the larger n (number of features in layer) is, the smaller you want wi
 
 the variance of wi = 1/n actually 2/n
 
-W[l] = np.random.randn(shape) * np.sqrt(2/(n[l-1]))
+`W[l] = np.random.randn(shape) * np.sqrt(2/(n[l-1]))`
 
 this doesn't solve exploding/vanishing gradients but it helps a lot
 
@@ -181,7 +181,7 @@ typical mini-batch sizes are: 64, 128, 256, 512
 ## More optimizers that are better than gradient descent
 
 ### exponentially weight (moving) averages
-v_t = beta * v_t-1 + (1 - beta)*theta_t
+`v_t = beta * v_t-1 + (1 - beta)*theta_t`
 
 v_t is approximately averaging over 1/(1 - beta) day's temperature.
 
@@ -204,8 +204,8 @@ Almost always works faster than standard gradient descent
 basically you get a weight average for he gradients and update with those. you take the oscillation
 of the first iterations and move in the general direction of the average.
 
-w = w - alpha * VdW
-b = b - alpha * Vdb
+`w = w - alpha * VdW`
+`b = b - alpha * Vdb`
 
 beta = 0.9 means last 10 iterations
 VdW and Vdb are initialized with 0s
@@ -214,11 +214,11 @@ VdW and Vdb are initialized with 0s
 
 grouped mean square prop
 
-Sdw = beta*SdW + (1-beta)dW^2 # element wise squared
-Sdb = beta*Sdb + (1-beta)db^2
+`Sdw = beta*SdW + (1-beta)dW^2 # element wise squared`
+`Sdb = beta*Sdb + (1-beta)db^2`
 
-w = w - alpha(dW/sqrt(Sdw))
-b = b - alpha(db/sqrt(Sdb))
+`w = w - alpha(dW/sqrt(Sdw))`
+`b = b - alpha(db/sqrt(Sdb))`
 
 if you're overshooting on an axis this will scale that up and smoothen out the motion due to the
 dividing term. the larger the jump, the more you divide by when updating so it smoothens out and
@@ -237,16 +237,16 @@ you iterate over t and use a mini batch
 VdW = beta1 + (1-beta1)dW
 Vdb = beta1 + (1-beta1)db
 
-Sdw = beta2*SdW + (1-beta2)dW^2
-Sdb = beta2*Sdb + (1-beta2)db^2
+`Sdw = beta2*SdW + (1-beta2)dW^2`
+`Sdb = beta2*Sdb + (1-beta2)db^2`
 
-Vdw[corrected] = Vdw/(1-beta1^t)
-Vdb[corrected] = Vdb/(1-beta1^t)
+`Vdw[corrected] = Vdw/(1-beta1^t)`
+`Vdb[corrected] = Vdb/(1-beta1^t)`
 
 Same for SdW and Sdb
 
-W = W - alpha* VdW[corrected]/(sqrt(SdW[corrected]) + epsilon)
-b = b - alpha* Vdb[corrected]/(sqrt(Sdb[corrected]) + epsilon)
+`W = W - alpha* VdW[corrected]/(sqrt(SdW[corrected]) + epsilon)`
+`b = b - alpha* Vdb[corrected]/(sqrt(Sdb[corrected]) + epsilon)`
 
 alpha needs to be tuned
 beta1 usually 0.9 (dW)
@@ -259,12 +259,12 @@ As you go, you can take smaller steps by having alpha be slower
 
 recall what epoch is; going thru the whole training set
 
-alpha = (1/(1+decay_rate * epoch_num)) * alpha
+`alpha = (1/(1+decay_rate * epoch_num)) * alpha`
 
 decay_rate is another parameter
 
-There's also exponential learning decay: alpha = 0.95^epochnum * alpha
-Also there's some constant variant: alpha = k/sqrt(epochnum) * alpha
+There's also exponential learning decay: alpha = 0.95^epochnum \* alpha
+Also there's some constant variant: alpha = k/sqrt(epochnum) \* alpha
 Also there's a staircase method, update after a while
 
 And finally there's also manual learning decay
@@ -316,8 +316,8 @@ Some hyperparameters allow for a true random search or hell even a grid
 but e.g. alpha could not behave this way, you could avoid a linear scale
 and use a log scale and sample uniformly at random on the log scale
 
-r = -4 * np.random.rand()
-alpha = 10^r
+`r = -4 * np.random.rand()`
+`alpha = 10^r`
 
 another tricky case could be the hyperparameters for exponentially weighted avgs.
 
@@ -423,7 +423,7 @@ Loss(y', y) = -sum from 1 to C of (y_j log(y'_j))
 y being a vector with a similar shape as hardmax. one hot vector
 for the classes
 
-J(W,b,...) = 1/m* sum(L(y', y))
+`J(W,b,...) = 1/m* sum(L(y', y))`
 
 *Backpropagation*
 
