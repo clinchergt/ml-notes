@@ -447,10 +447,10 @@ for the classes
 
 ## ML Strategy
 
-Fit training set well on cost function
-Fit dev set well on cost function
-Fit test set well on cost function
-Performs well in real world
+1. Fit training set well on cost function
+1. Fit dev set well on cost function
+1. Fit test set well on cost function
+1. Performs well in real world
 
 This is the chain of assumptions in ML
 
