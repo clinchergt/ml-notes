@@ -2,7 +2,7 @@
 
 Data is *very* important.
 
-Garbage in garbage out concept. If you don't have good data to feed the alg,
+"Garbage in; garbage out" concept. If you don't have good data to feed the alg,
 you're not gonna be getting good results no matter how good the alg is.
 
 Features matter!
@@ -62,7 +62,7 @@ error.
 Avoid small smaple sizes. Just so you can rule out being right randomly or
 by chance.
 
-** Dataset splits **
+**Dataset splits**
 
 Backtesting. Sample in time chunks if predictions evolve with time
 
