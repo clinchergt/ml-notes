@@ -96,6 +96,7 @@ variance and if you pick a smaller k you get more bias and less variance
 Be very careful about why your prediction works or doesn't work. Especially
 wary of unrelated data and how it can lead you to wrong conclusions.
 
+## **Week 2**
 
 ## Caret package
 
