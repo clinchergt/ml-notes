@@ -97,6 +97,124 @@ Be very careful about why your prediction works or doesn't work. Especially
 wary of unrelated data and how it can lead you to wrong conclusions.
 
 
+## Caret package
+
+You can use it to clean and preprocess data. You can also slice and prepare
+the data like doing stuff like CV and train/test splits. There's also useful
+functions like ConfusionMatrix
+
+It also includes regresions, naives bayes, svm, regression trees, random trees,
+etc.
+
+### Training options
+
+Weights: useful if your data is unbalanced
+
+**Metrics**:
+
+* RMSE and RSquared (for continuous)
+* Accuracy and Kappa (for categorical)
+
+There's also a preprocessing option (will go in depth later)
+
+You can specify if you want CV, bootstrapping, return options.
+
+Since some processes dependon on random draws. If you set a seed, you will
+ensure you'll get the results on different runs. Repeatable results.
+
+## Plotting predictors
+
+(And data)
+
+Density plots contrasting two variables
+
+Graph over the training set, you shouldn't look at the test set (does this
+make sense?)
+
+You're looking for:
+
+* Outliers
+* Imbalances
+* Skewed variables
+* Groups of points not explained by a predictor
+
+## Preprocessing
+
+Standardize variables. Take the value, substract the mean and then divide
+by the std.
+
+Remember to use the train mean and the train std to standardize the test set,
+even tho they're not the actual values for the test set, it should work and
+should standardize fairly well.
+
+**BoxCox** transforms (take a look into this)
+
+**Imputation**: caret has a preprocess method that can impute values using
+knnImpute as an argument for the `method` parameter.
+
+
+**CHECK OUT THE PREPROCESS CARET FUNCTION**
+
+## Covariate creation
+
+1. From raw data to covariate (create useful features that summarize data)
+"Summarization vs feature loss" the game basically. You need to explain most
+of what's going on.
+1. Transforming tidy covariates (e.g. squaring a variable) This should be done
+only on the training set. More necessary for regressions and svms. Spend some
+time on the EDA. New covariates should be added to the dataset
+
+Common covariates to add
+
+* Dummy variables for categorical variables
+* Removing zero covariates (`nearZeroVar`, e.g. vars that only have one val)
+Variables that don't have any variability in them and you can throw them away
+
+**You have to create the same covariates in the test set using the same
+method**
+
+Be careful about overfitting. If you overcreate features apply some filtering
+before feeding them into your model
+
+## Preprocessing with principal components analysis
+
+You leave out the outcome column.
+
+You get the correlation of each var to every other var.
+
+Which of them have a high correlation. Higher than 0.8 e.g.
+
+How can we take those variables and make them one variable. We should pick a
+combination that captures the most information possible.
+
+* Find a new set of multivariate variables that are uncorrelated and explain
+as much variance as possible
+* If you put all hte variables together in one matrix, find the matrix created
+with the fewer variables
+
+### SVD
+
+Singular value decomposition, if a X is a matrix with each variable then:
+
+`X = UD(V^-1)`
+
+where **U** are orthogonal left singular vectors and **V** are orthogonal right
+vectors and **D** is a diagonal matrix(singular values)
+
+### PCA
+
+The right singular values if you first scale (standardize with mean and std)
+
+`prcomp` in R.
+
+Or in caret `preProcess` with the method `pca` and specify the number of comps
+
+Watch out for outliers *before* you do PCA. You should also plot the predictors
+
+This can make it harder to interpret predictor stuff. It's mostly useful for
+linear models.
+
+
 
 
 
