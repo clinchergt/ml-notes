@@ -215,6 +215,9 @@ Watch out for outliers *before* you do PCA. You should also plot the predictors
 This can make it harder to interpret predictor stuff. It's mostly useful for
 linear models.
 
+
+## Week 3
+
 ## Predicting with different methods
 
 ### Predicting with trees
