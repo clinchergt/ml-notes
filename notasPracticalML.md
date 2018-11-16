@@ -215,6 +215,110 @@ Watch out for outliers *before* you do PCA. You should also plot the predictors
 This can make it harder to interpret predictor stuff. It's mostly useful for
 linear models.
 
+## Predicting with different methods
+
+### Predicting with trees
+
+**Pros:**
+
+* Easy to interpret
+* Better performance in non-linear settings
+
+**Cons:**
+
+* Without CV it can lead to overfitting
+* Harder to esimate uncertainty
+* Results may be variable
+
+You basically do
+
+1. Start with all variables
+1. Find the variable that best separates the outcomes
+1. Divide the data into two groups/leaves
+1. Within each split find the best divide
+1. Continue until groups are too small
+
+**Gini index**:
+
+0 = perfect purity  
+0.5 = no purity
+
+Check out **Deviance/information** gain too.
+
+In caret, use `train` and use the method `"rpart"`
+
+The package `rattle` and its function `fancyRpartPlot` can plot the three
+in a fancy way.
+
+### Bagging
+
+Bootstrap aggregating.
+
+1. Resample cases and recalculate in predictions
+1. Average or majority vote
+
+You get similar bias as with trees and reduced variance. It's useful for
+non linear functions.
+
+in `caret` you can set method to `bagEarth`, `treeBag`, `bagFDA`.
+
+You can create your own bagging method with caret. You set the predictors,
+then you set the outcome. You set the number of subsamples and then you set
+a control which specifies how you're gonna fit, how you're gonna predict, and
+finally how you put the results together e.g. averaging.
+
+Bagging is very useful for non linear models. OFten used with trees, an
+extension of this is random forests.
+
+### Random forests
+
+An extension to bagging using regression trees.
+
+1. Bootstrap samples
+1. At each split, bootstrap variables
+1. Grow multiple trees and vote
+
+Second step is key as it allows for different trees
+
+Some cons are
+
+* Speed
+* Interpretability
+* Overfitting
+
+But it's accurate.
+
+In `caret` you can use the method `rf`
+
+You can use `getTree` to explore the resulting trees.
+
+### Boosting
+
+Accurate out of the box.
+
+Take a lot of weak predictors and weight them and add them up. This results in
+a stronger predictor.
+
+1. Start with a set of classifiers
+1. Create a classifier that combines these classifier functions
+	* Goal is to minimize error
+	* Iterative
+	* Calculate weights
+
+So you basically classify and you upweight the points you missclassified
+
+### Model based prediction
+
+1. You assume the data follow a probabilistic model
+1. Uses bayes' theorem to identify optimal classifiers.
+
+More common models use this
+
+* Linear discriminant analysis
+* Quadratic discriminant analysis
+* Model based prediction, allows for complicated versions of the covariance
+matrix
+* Naive bayes: assumes indpendence between predictors
 
 
 
