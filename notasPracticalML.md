@@ -323,6 +323,117 @@ More common models use this
 matrix
 * Naive bayes: assumes indpendence between predictors
 
+# Week 4
+
+## Regularized regression
+
+The basic idea is to fit a regression model and then penalize the large
+coefficients so you don't depend solely on them. It might help with the bias
+variance tradeoff.
+
+**Pros:**
+
+* Can help with bias/variance tradeoff
+* It can help with model selection
+
+**Cons:**
+
+* May be computationally demanding
+* Doesn't perform as well as e.g. forests
+
+As you increase the predictors in your data your train error is gonna go down
+but your test error might hit a plaeteu and then go back up.
+
+
+## Model selection
+
+1. Divide data into train, dev, and test.
+1. Train all models on the train model
+1. Get the performance measure on the dev set for all models
+1. Pick the one with the best **test** performance.
+1. You may resplit and reperform 1-3
+
+However you might run into limited data or limited computational power.
+
+### Decomposing expected prediction error
+
+We define the function of the performance we can say that the error is:
+
+`Irreducible error + Bias^2 + Variance`
+
+**Back to regularization**
+
+Solve:
+
+`Sum(y - Beta_0 + sum(x_ij * Beta_j))^2 + lamda*sum(Beta_j^2)`
+
+This means you penalize big coefficients and so they need to be smaller
+as you go.
+
+* Lambda controls the size of the coefficients
+* Lambda controls the amount of regularization
+
+**Lasso**: you sum over the coefficients without squaring too
+
+## Combining classifiers
+
+In general it improves accuracy. It reduces interpretability tho.
+
+Boosting, bagging, and random forests are variant of this, but these are
+all the same type of predictor being combined.
+
+Netflix price was won by 107 predictors combined.
+
+Check out the package `caretEnsemble`
+
+This can lead to increases in computational complexity.
+
+## Forecasting
+
+* Data is dependent over time
+* Specific pattern types
+	* Trends
+	* Seasonal patterns
+	* Cycle patterns
+* Sumbsampling into training/testing is complicated
+* Similar issues arise in spatial data
+* Typically we wanna predit one or more observations into the future
+* All standard predictions can be used tho, with some precautions
+
+**Beware of spurious correlations**  
+**Beware extrapolation**
+
+`quantmod` package
+
+`decompose` function to decompose a time series into parts
+
+When building a train/test set, you need to include consecutive timepoints
+
+Methods to deal with time series
+
+#### Simple moving average
+
+#### Exponential smoothing
+
+Forecasting and timeseries prediction
+
+Rob Hyndman's Forecasting: principles and practice is a good place to start
+
+## Unsupervised prediction
+
+Sometimes you don't have labels for the prediction so you can do something like
+
+* Create clusters
+* Name clusters
+* Build predictor for clusters
+
+And then you predict these new clusters for new data
+
+`cl_predict` in the `clue` package might provide this functionality
+
+This is an exploratory technique so be careful with over-interpretation.
+
+
 
 
 
